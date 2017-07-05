@@ -3,13 +3,19 @@
   require_once 'connect-db.php';
 
   if (isset($_SESSION['userSession']) != "") {
+    
     header("Location: home.php");
     exit;
   }
+  
+  
 
   if (isset($_POST['login'])) {
     $email = strip_tags($_POST['email']);
     $password = strip_tags($_POST['password']);
+    $rememberme = $_POST['remember'];
+
+    
 
     $email = $DBcon->real_escape_string($email);
     $password = $DBcon->real_escape_string($password);
@@ -19,14 +25,26 @@
 
     $count = $query->num_rows; //if email/password are correct returns must be 1 row
 
-    if (password_verify($password, $row['password']) && $count == 1) {
+    if (password_verify($password, $row['password']) && $count == 1) { //if email and password match
+      $hour = time() + 3600;
+      setcookie('ID_my_site', $email, $hour); //remember email for 1 hour
+
+      $year = time() + 31536000;
+      if ($rememberme == '1' || $rememberme == 'on') {
+        setcookie('email', $email, $year);
+        setcookie('password', $password, $year); //remember email and password
+      }
+
       $_SESSION['userSession'] = $row['user_id'];
+
       header("Location: home.php");
     } else {
       $msg = "<div class='alert alert-danger'>
               <span class='glyphicon glyphicon-info-sign'></span>&nbsp; Invalid Username or Password
               </div>";
     }
+
+    
 
     $DBcon->close();
   }
@@ -50,7 +68,7 @@
 <body>
   <div class="signin-form">
     <div class="container">
-     <form class="login" id="login-form" method="POST">
+     <form class="login" action="<?php echo $_SERVER['PHP_SELF']?>" id="login-form" method="POST">
       <h2 class="form-signin-heading">Sign In</h2>
 
       <?php
@@ -63,14 +81,16 @@
 
       <div class="form-group">
         <label for="email">Email Address</label>
-        <input type="email" class="form-control" name="email" id="email" placeholder="Your email to login...">
+        <input type="text" class="form-control" name="email" id="email" value="<?php echo $_COOKIE['email']; ?>" placeholder="Your email to login...">
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" class="form-control" name="password" id="email" placeholder="Your password...">
+        <input type="password" class="form-control" name="password" id="email" value="<?php echo $_COOKIE['password']; ?>" placeholder="Your password...">
       </div>
 
+      <label><input type="checkbox" name="true" value="true" id="remember"> Remember Me</label>
+      
       <hr>
       <div class="form-group">
         <button type="submit" class="btn btn-info" name="login" id="login">
@@ -81,6 +101,9 @@
      </form>
     </div> <!--end container-->
   </div>
+
+
+
 
   <!-- JQUERY-->
   <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.0.min.js"></script>
