@@ -7,9 +7,13 @@
 	 header("Location: home.php");
 	}
 
+	//deleting cookie by setting expire to past time
+	$res = setcookie('user', '', time() - 3600);
+
 	if (isset($_GET['logout'])) {
-	 session_destroy();
-	 unset($_SESSION['userSession']);
-	 header("Location: index.php");
+		//destroy al session variables
+		session_destroy();
+		unset($_SESSION['userSession']);
+		header("Location: index.php");
 	}
 ?>
