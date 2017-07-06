@@ -69,7 +69,8 @@
                   </div>";
         
       } else {
-        $query = "INSERT INTO tbl_users(username,email,password) VALUES('$uname','$email','$hashed_password')";
+        $query = "INSERT INTO tbl_users(username,email,password) 
+                  VALUES('$uname','$email','$hashed_password')";
         $data = $DBcon->query($query);
         if($data) {
           $msg = "<div class='alert alert-success'>
