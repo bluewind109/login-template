@@ -68,7 +68,7 @@
 <body>
   <div class="signin-form">
     <div class="container">
-     <form class="login" action="<?php echo $_SERVER['PHP_SELF']?>" id="login-form" method="POST">
+     <form class="login" action="login.php" id="login-form" method="POST">
       <h2 class="form-signin-heading">Sign In</h2>
 
       <?php
@@ -81,12 +81,12 @@
 
       <div class="form-group">
         <label for="email">Email Address</label>
-        <input type="text" class="form-control" name="email" id="email" value="<?php echo $_COOKIE['email']; ?>" placeholder="Your email to login...">
+        <input type="text" class="form-control" name="email" id="email" placeholder="Your email to login...">
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" class="form-control" name="password" id="email" value="<?php echo $_COOKIE['password']; ?>" placeholder="Your password...">
+        <input type="password" class="form-control" name="password" id="email" placeholder="Your password...">
       </div>
 
       <label><input type="checkbox" name="true" value="true" id="remember"> Remember Me</label>
