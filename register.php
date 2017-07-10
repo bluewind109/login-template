@@ -1,6 +1,6 @@
 <?php
   session_start();
-  if (isset($_SESSION['userSession']) != ""){
+  if (isset($_SESSION['user']) != ""){
     header("Location: home.php");
   }
   require_once 'connect-db.php';
