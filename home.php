@@ -2,11 +2,21 @@
 	session_start();
 	include_once 'connect-db.php';
 
-	if (!isset($_SESSION['userSession'])) {
+  if(isset($_COOKIE['user']) && $_COOKIE['user'] != '') {
+    $user =$_COOKIE['user'];
+    //get user data from mysql
+
+  } else if(isset($_SESSION['user']) && $_SESSION['user'] != '') {
+    $user = $_SESSION['user'];
+  } else {
+    header("Location: index.php");
+  }
+
+	if (!isset($_SESSION['user'])) {
 		header("Location: index.php");
 	}
 
-	$query = $DBcon->query("SELECT * FROM tbl_users WHERE user_id=".$_SESSION['userSession']);
+	$query = $DBcon->query("SELECT * FROM tbl_users WHERE user_id=".$_SESSION['user']);
 	$userRow = $query->fetch_array();
 	$DBcon->close();
 ?>
